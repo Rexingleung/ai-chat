@@ -3,6 +3,7 @@ import { format } from 'date-fns'
 import { Copy, RefreshCw, User, Bot, Check, AlertCircle } from 'lucide-react'
 import clsx from 'clsx'
 import { Message } from '../types'
+import { MarkdownMessage } from './MarkdownMessage'
 
 interface MessageBubbleProps {
   message: Message
@@ -49,7 +50,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
         isUser ? 'items-end' : 'items-start'
       )}>
         <div className={clsx(
-          'rounded-2xl px-4 py-3 relative group',
+          'rounded-2xl px-4 py-3 relative group message-bubble',
           isUser
             ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white'
             : message.error
@@ -64,10 +65,18 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
           )}
           
           <div className={clsx(
-            'whitespace-pre-wrap break-words',
             message.regenerating && 'opacity-50'
           )}>
-            {message.content}
+            {isAssistant ? (
+              <MarkdownMessage 
+                content={message.content}
+                className="prose prose-sm max-w-none"
+              />
+            ) : (
+              <div className="whitespace-pre-wrap break-words">
+                {message.content}
+              </div>
+            )}
           </div>
           
           {message.regenerating && (

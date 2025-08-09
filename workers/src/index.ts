@@ -7,12 +7,7 @@ import { ExecutionContext } from 'graphql/execution/execute'
 const yoga = createYoga({
   schema,
   context: createContext,
-  cors: {
-    origin: '*',
-    credentials: true,
-    methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
-  },
+  cors: false, // 禁用 GraphQL Yoga 的内置 CORS 处理
   graphqlEndpoint: '/graphql',
   landingPage: false,
 })
@@ -35,17 +30,26 @@ export default {
         request,
       })
 
-      // 添加 CORS 头
-      const corsResponse = new Response(response.body, {
-        status: response.status,
-        statusText: response.statusText,
-        headers: {
-          ...Object.fromEntries(response.headers.entries()),
-          ...corsHeaders,
-        },
+      // 创建新的响应头，避免重复的 CORS 头
+      const responseHeaders = new Headers(response.headers)
+      
+      // 移除可能存在的重复 CORS 头
+      responseHeaders.delete('Access-Control-Allow-Origin')
+      responseHeaders.delete('Access-Control-Allow-Methods')
+      responseHeaders.delete('Access-Control-Allow-Headers')
+      responseHeaders.delete('Access-Control-Allow-Credentials')
+      responseHeaders.delete('Access-Control-Max-Age')
+      
+      // 添加我们的 CORS 头
+      Object.entries(corsHeaders).forEach(([key, value]) => {
+        responseHeaders.set(key, value)
       })
 
-      return corsResponse
+      return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: responseHeaders,
+      })
     } catch (error) {
       console.error('GraphQL Error:', error)
       return new Response(
