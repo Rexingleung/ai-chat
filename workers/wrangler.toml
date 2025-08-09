@@ -5,19 +5,32 @@ compatibility_date = "2024-08-01"
 [env.production]
 name = "ai-chat-graphql"
 
-[[kv_namespaces]]
+[[env.production.kv_namespaces]]
 binding = "CHAT_DB1"
 id = "91f8ec52ab864fc6a6820da18e91f4f3"
-preview_id = "404299fe0a0044c58f1a319d55bb12d9"
+
+[[env.production.kv_namespaces]]
+binding = "RATE_LIMIT1"
+id = "b1edba7395114f6580498be0bbe3a788"
+
+[env.production.vars]
+AI_API_URL = "https://api.deepseek.com/v1/chat/completions"
+AI_MODEL = "deepseek-chat"
+MAX_MESSAGES_PER_HOUR = "60"
+MAX_MESSAGE_LENGTH = "2000"
+
+# 开发环境配置
+[[kv_namespaces]]
+binding = "CHAT_DB1"
+id = "404299fe0a0044c58f1a319d55bb12d9"
 
 [[kv_namespaces]]
 binding = "RATE_LIMIT1"
-id = "b1edba7395114f6580498be0bbe3a788"
-preview_id = "0a6c8cd827034dd78154d13eef559dbb"
+id = "0a6c8cd827034dd78154d13eef559dbb"
 
 [vars]
 AI_API_URL = "https://api.deepseek.com/v1/chat/completions"
-AI_API_KEY = ""
+AI_API_KEY = "sk-c7bae2605b6e48feb8ff9d626045e79a"
 AI_MODEL = "deepseek-chat"
 MAX_MESSAGES_PER_HOUR = "60"
 MAX_MESSAGE_LENGTH = "2000"

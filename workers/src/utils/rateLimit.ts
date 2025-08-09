@@ -9,7 +9,7 @@ interface RateLimitData {
  * 检查速率限制
  */
 export async function checkRateLimit(
-  rateLimitKV: KVNamespace,
+  rateLimitKV: any,
   clientIP: string,
   maxRequests: number = 60
 ): Promise<{ remaining: number; resetTime: number }> {
@@ -34,7 +34,7 @@ export async function checkRateLimit(
     
     return {
       remaining,
-      resetTime: rateLimitData.resetTime * 1000 // 转换为毫秒
+      resetTime: rateLimitData.resetTime // 保持为秒
     }
   } catch (error) {
     console.error('Check rate limit error:', error)
@@ -50,7 +50,7 @@ export async function checkRateLimit(
  * 更新速率限制
  */
 export async function updateRateLimit(
-  rateLimitKV: KVNamespace,
+  rateLimitKV: any,
   clientIP: string
 ): Promise<void> {
   const currentTime = getCurrentTimestamp()
@@ -89,7 +89,7 @@ export async function updateRateLimit(
  * 清理过期的速率限制数据
  */
 export async function cleanupExpiredRateLimit(
-  rateLimitKV: KVNamespace,
+  rateLimitKV: any,
   clientIP: string
 ): Promise<void> {
   const currentTime = getCurrentTimestamp()
