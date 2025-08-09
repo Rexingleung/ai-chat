@@ -68,6 +68,7 @@ export interface Env {
   RATE_LIMIT: KVNamespace
   AI_API_URL: string
   AI_API_KEY: string
+  AI_MODEL: string
   MAX_MESSAGES_PER_HOUR: string
   MAX_MESSAGE_LENGTH: string
 }
