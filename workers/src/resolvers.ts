@@ -1,7 +1,7 @@
 import { Context } from './context'
 import { generateId } from './utils/helpers'
 import { checkRateLimit, updateRateLimit } from './utils/rateLimit'
-import { callAI } from './utils/ai'
+import { callAI, validateModel } from './utils/ai'
 import { validateMessage } from './utils/validation'
 
 export const resolvers = {
@@ -63,6 +63,12 @@ export const resolvers = {
           throw new Error(validation.error)
         }
         
+        // 验证AI模型
+        const model = context.env.AI_MODEL || 'deepseek-chat'
+        if (!validateModel(model)) {
+          console.warn('Invalid AI model, falling back to deepseek-chat:', model)
+        }
+        
         // 检查速率限制
         const rateLimit = await checkRateLimit(context.env.RATE_LIMIT, clientIP)
         if (rateLimit.remaining <= 0) {
@@ -107,6 +113,7 @@ export const resolvers = {
           messages: session.messages.slice(-10), // 只发送最近10条消息
           apiUrl: context.env.AI_API_URL,
           apiKey: context.env.AI_API_KEY,
+          model: model,
         })
         
         // 添加AI回复
