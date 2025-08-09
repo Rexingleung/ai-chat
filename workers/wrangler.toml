@@ -1,0 +1,23 @@
+name = "ai-chat-graphql"
+main = "src/index.ts"
+compatibility_date = "2024-08-01"
+
+[env.production]
+name = "ai-chat-graphql"
+
+[[kv_namespaces]]
+binding = "CHAT_DB"
+id = "your-chat-db-namespace-id"
+preview_id = "your-chat-db-preview-id"
+
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "your-rate-limit-namespace-id"
+preview_id = "your-rate-limit-preview-id"
+
+[vars]
+AI_API_URL = "https://api.deepseek.com/v1/chat/completions"
+AI_API_KEY = "your-deepseek-api-key"
+AI_MODEL = "deepseek-chat"
+MAX_MESSAGES_PER_HOUR = "60"
+MAX_MESSAGE_LENGTH = "2000"
