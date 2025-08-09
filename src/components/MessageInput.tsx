@@ -5,7 +5,6 @@ import clsx from 'clsx'
 interface MessageInputProps {
   value: string
   onChange: (value: string) => void
-  onSubmit: (e: React.FormEvent) => void
   loading: boolean
   onSendMessage: (content: string) => void
 }
@@ -13,7 +12,6 @@ interface MessageInputProps {
 export const MessageInput: React.FC<MessageInputProps> = ({
   value,
   onChange,
-  onSubmit,
   loading,
   onSendMessage
 }) => {
@@ -51,7 +49,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="relative">
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm transition-all focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20">
         <textarea
           ref={textareaRef}
           value={value}
@@ -83,7 +81,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
         </button>
       </div>
       
-      <div className="flex justify-between items-center mt-2 px-2">
+      <div className="flex justify-between items-center px-2 mt-2">
         <div className="text-xs text-gray-500">
           按 Enter 发送，Shift + Enter 换行
         </div>

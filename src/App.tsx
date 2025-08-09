@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { ChatContainer } from './components/ChatContainer'
 // import { Header } from './components/Header'
 import { useChatHistory } from './hooks/useChatHistory'
@@ -10,7 +10,6 @@ function App() {
     messages,
     loading,
     sendMessage,
-    clearHistory,
     regenerateResponse
   } = useChatHistory()
   
@@ -30,10 +29,10 @@ function App() {
     await sendMessage(userMessage)
   }, [sendMessage, loading])
 
-  const handleInputSubmit = useCallback((e: React.FormEvent) => {
-    e.preventDefault()
-    handleSendMessage(input)
-  }, [input, handleSendMessage])
+  // const handleInputSubmit = useCallback((e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   handleSendMessage(input)
+  // }, [input, handleSendMessage])
 
   const handleRegenerateResponse = useCallback((messageId: string) => {
     regenerateResponse(messageId)
@@ -52,7 +51,6 @@ function App() {
           loading={loading}
           input={input}
           onInputChange={setInput}
-          onSubmit={handleInputSubmit}
           onSendMessage={handleSendMessage}
           onRegenerateResponse={handleRegenerateResponse}
         />

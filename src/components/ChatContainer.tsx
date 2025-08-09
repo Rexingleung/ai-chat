@@ -8,7 +8,6 @@ interface ChatContainerProps {
   loading: boolean
   input: string
   onInputChange: (value: string) => void
-  onSubmit: (e: React.FormEvent) => void
   onSendMessage: (content: string) => void
   onRegenerateResponse: (messageId: string) => void
 }
@@ -18,7 +17,6 @@ export const ChatContainer: React.FC<ChatContainerProps> = ({
   loading,
   input,
   onInputChange,
-  onSubmit,
   onSendMessage,
   onRegenerateResponse
 }) => {
@@ -33,8 +31,8 @@ export const ChatContainer: React.FC<ChatContainerProps> = ({
   }, [messages])
 
   return (
-    <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full px-4">
-      <div className="flex-1 overflow-hidden flex flex-col">
+    <div className="flex flex-col flex-1 px-4 mx-auto w-full max-w-4xl">
+      <div className="flex overflow-hidden flex-col flex-1">
         <MessageList 
           messages={messages}
           loading={loading}
@@ -47,7 +45,6 @@ export const ChatContainer: React.FC<ChatContainerProps> = ({
         <MessageInput
           value={input}
           onChange={onInputChange}
-          onSubmit={onSubmit}
           loading={loading}
           onSendMessage={onSendMessage}
         />
