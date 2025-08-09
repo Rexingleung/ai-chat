@@ -10,8 +10,8 @@ const yoga = createYoga({
   cors: {
     origin: '*',
     credentials: true,
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
   },
   graphqlEndpoint: '/graphql',
   landingPage: false,
@@ -65,8 +65,8 @@ export default {
 }
 
 export interface Env {
-  CHAT_DB1: KVNamespace
-  RATE_LIMIT1: KVNamespace
+  CHAT_DB1: any
+  RATE_LIMIT1: any
   AI_API_URL: string
   AI_API_KEY: string
   AI_MODEL: string

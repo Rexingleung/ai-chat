@@ -14,11 +14,15 @@ const client = new ApolloClient({
     },
     query: {
       errorPolicy: 'all'
+    },
+    mutate: {
+      errorPolicy: 'all'
     }
   },
   headers: {
     'Content-Type': 'application/json',
-  }
+  },
+  credentials: 'omit' // 明确设置不发送 cookies
 })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
