@@ -38,7 +38,7 @@ export const CREATE_SESSION = gql`
   }
 `
 
-export const GET_RATE_LIMIT = gql`
+export const GET_RATE_LIMIT1 = gql`
   query GetRateLimit {
     rateLimit {
       remaining

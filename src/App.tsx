@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import { ChatContainer } from './components/ChatContainer'
-import { Header } from './components/Header'
+// import { Header } from './components/Header'
 import { useChatHistory } from './hooks/useChatHistory'
 import { Message } from './types'
 import { v4 as uuidv4 } from 'uuid'
@@ -40,13 +40,13 @@ function App() {
   }, [regenerateResponse])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex flex-col">
-      <Header 
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      {/* <Header 
         onClearHistory={clearHistory}
         messageCount={messages.length}
-      />
+      /> */}
       
-      <main className="flex-1 flex flex-col">
+      <main className="flex flex-col flex-1">
         <ChatContainer
           messages={messages}
           loading={loading}
@@ -58,7 +58,7 @@ function App() {
         />
       </main>
       
-      <footer className="text-center py-4 text-sm text-gray-500 border-t bg-white/80">
+      <footer className="py-4 text-sm text-center text-gray-500 border-t bg-white/80">
         <p>
           基于 React + TypeScript + GraphQL + Cloudflare Workers 构建
         </p>

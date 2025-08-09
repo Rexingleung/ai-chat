@@ -2,6 +2,7 @@ import { createYoga } from 'graphql-yoga'
 import { schema } from './schema'
 import { createContext } from './context'
 import { corsHeaders } from './utils/cors'
+import { ExecutionContext } from 'graphql/execution/execute'
 
 const yoga = createYoga({
   schema,
@@ -64,8 +65,8 @@ export default {
 }
 
 export interface Env {
-  CHAT_DB: KVNamespace
-  RATE_LIMIT: KVNamespace
+  CHAT_DB1: KVNamespace
+  RATE_LIMIT1: KVNamespace
   AI_API_URL: string
   AI_API_KEY: string
   AI_MODEL: string

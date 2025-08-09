@@ -71,12 +71,12 @@ npm install
 
 ```bash
 # 创建生产环境的 KV 命名空间
-wrangler kv:namespace create "CHAT_DB"
-wrangler kv:namespace create "RATE_LIMIT"
+wrangler kv:namespace create "CHAT_DB1"
+wrangler kv:namespace create "RATE_LIMIT1"
 
 # 创建预览环境的 KV 命名空间
-wrangler kv:namespace create "CHAT_DB" --preview
-wrangler kv:namespace create "RATE_LIMIT" --preview
+wrangler kv:namespace create "CHAT_DB1" --preview
+wrangler kv:namespace create "RATE_LIMIT1" --preview
 ```
 
 #### 更新 wrangler.toml
@@ -85,12 +85,12 @@ wrangler kv:namespace create "RATE_LIMIT" --preview
 
 ```toml
 [[kv_namespaces]]
-binding = "CHAT_DB"
+binding = "CHAT_DB1"
 id = "your-chat-db-namespace-id"
 preview_id = "your-chat-db-preview-id"
 
 [[kv_namespaces]]
-binding = "RATE_LIMIT"
+binding = "RATE_LIMIT1"
 id = "your-rate-limit-namespace-id"
 preview_id = "your-rate-limit-preview-id"
 
@@ -206,11 +206,11 @@ ai-chat/
 
 ### KV 存储结构
 
-#### CHAT_DB
+#### CHAT_DB1
 - `session:{sessionId}` - 存储聊天会话数据
 
-#### RATE_LIMIT
-- `rate_limit:{clientIP}:{hourTimestamp}` - 存储速率限制数据
+#### RATE_LIMIT1
+- `RATE_LIMIT1:{clientIP}:{hourTimestamp}` - 存储速率限制数据
 
 ## 📊 API 文档
 
@@ -297,7 +297,7 @@ wrangler tail
 wrangler dev
 
 # 验证 KV 数据
-wrangler kv:key list --binding=CHAT_DB
+wrangler kv:key list --binding=CHAT_DB1
 ```
 
 ## 🤝 贡献指南

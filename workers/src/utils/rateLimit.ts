@@ -15,7 +15,7 @@ export async function checkRateLimit(
 ): Promise<{ remaining: number; resetTime: number }> {
   const currentTime = getCurrentTimestamp()
   const hourStart = getHourStartTimestamp(currentTime * 1000)
-  const key = `rate_limit:${clientIP}:${hourStart}`
+  const key = `RATE_LIMIT1:${clientIP}:${hourStart}`
   
   try {
     const existing = await rateLimitKV.get(key)
@@ -55,7 +55,7 @@ export async function updateRateLimit(
 ): Promise<void> {
   const currentTime = getCurrentTimestamp()
   const hourStart = getHourStartTimestamp(currentTime * 1000)
-  const key = `rate_limit:${clientIP}:${hourStart}`
+  const key = `RATE_LIMIT1:${clientIP}:${hourStart}`
   
   try {
     const existing = await rateLimitKV.get(key)
@@ -96,7 +96,7 @@ export async function cleanupExpiredRateLimit(
   
   try {
     // 获取所有相关的键
-    const list = await rateLimitKV.list({ prefix: `rate_limit:${clientIP}:` })
+    const list = await rateLimitKV.list({ prefix: `RATE_LIMIT1:${clientIP}:` })
     
     for (const item of list.keys) {
       const data = await rateLimitKV.get(item.name)

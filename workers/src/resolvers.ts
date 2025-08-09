@@ -13,7 +13,7 @@ export const resolvers = {
     ) => {
       try {
         const { sessionId } = args
-        const sessionData = await context.env.CHAT_DB.get(`session:${sessionId}`)
+        const sessionData = await context.env.CHAT_DB1.get(`session:${sessionId}`)
         
         if (!sessionData) {
           return null
@@ -29,7 +29,7 @@ export const resolvers = {
     rateLimit: async (parent: any, args: any, context: Context) => {
       try {
         const clientIP = context.request.headers.get('CF-Connecting-IP') || 'unknown'
-        const rateLimit = await checkRateLimit(context.env.RATE_LIMIT, clientIP)
+        const rateLimit = await checkRateLimit(context.env.RATE_LIMIT1, clientIP)
         
         return {
           remaining: rateLimit.remaining,
@@ -70,13 +70,13 @@ export const resolvers = {
         }
         
         // 检查速率限制
-        const rateLimit = await checkRateLimit(context.env.RATE_LIMIT, clientIP)
+        const rateLimit = await checkRateLimit(context.env.RATE_LIMIT1, clientIP)
         if (rateLimit.remaining <= 0) {
           throw new Error('Rate limit exceeded. Please try again later.')
         }
         
         // 更新速率限制
-        await updateRateLimit(context.env.RATE_LIMIT, clientIP)
+        await updateRateLimit(context.env.RATE_LIMIT1, clientIP)
         
         const currentSessionId = sessionId || generateId()
         const messageId = generateId()
@@ -84,7 +84,7 @@ export const resolvers = {
         
         // 获取现有会话或创建新会话
         let session
-        const existingSession = await context.env.CHAT_DB.get(`session:${currentSessionId}`)
+        const existingSession = await context.env.CHAT_DB1.get(`session:${currentSessionId}`)
         
         if (existingSession) {
           session = JSON.parse(existingSession)
@@ -128,7 +128,7 @@ export const resolvers = {
         session.updatedAt = assistantMessage.timestamp
         
         // 保存会话
-        await context.env.CHAT_DB.put(
+        await context.env.CHAT_DB1.put(
           `session:${currentSessionId}`,
           JSON.stringify(session),
           { expirationTtl: 7 * 24 * 60 * 60 } // 7天过期
@@ -161,7 +161,7 @@ export const resolvers = {
           updatedAt: timestamp,
         }
         
-        await context.env.CHAT_DB.put(
+        await context.env.CHAT_DB1.put(
           `session:${sessionId}`,
           JSON.stringify(session),
           { expirationTtl: 7 * 24 * 60 * 60 }
