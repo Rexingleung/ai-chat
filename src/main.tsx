@@ -6,7 +6,7 @@ import './index.css'
 
 // Apollo Client配置
 const client = new ApolloClient({
-  uri: 'https://ai-chat-graphql.wyleleung.workers.dev/graphql', // 您的Workers域名
+  uri: 'https://ai-workers1.wyleleung.workers.dev/graphql', // 您的Workers域名
   cache: new InMemoryCache(),
   defaultOptions: {
     watchQuery: {
