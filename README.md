@@ -1,6 +1,6 @@
 # AI Chat 🤖
 
-一个基于 React + TypeScript + Cloudflare Workers + GraphQL 构建的现代化 AI 聊天应用。
+一个基于 React + TypeScript + Cloudflare Workers + GraphQL 构建的现代化 AI 聊天应用。**默认使用 DeepSeek API**，也支持 OpenAI。
 
 ## ✨ 特性
 
@@ -11,6 +11,7 @@
 - 🔒 **安全防护**: 内置速率限制和内容验证
 - 🎨 **精美设计**: 响应式设计，支持深色模式
 - 📱 **移动端友好**: 完美适配手机和平板
+- 🤖 **多AI支持**: DeepSeek (默认) / OpenAI GPT 系列
 
 ## 💻 技术栈
 
@@ -26,7 +27,7 @@
 - **Cloudflare Workers** - 边缘计算平台
 - **GraphQL Yoga** - 现代化的 GraphQL 服务器
 - **Cloudflare KV** - 分布式键值存储
-- **OpenAI API** - AI 对话能力
+- **DeepSeek API** - 默认AI对话能力 (也支持OpenAI)
 
 ## 🚀 快速开始
 
@@ -35,7 +36,7 @@
 - Node.js 18+
 - npm 或 yarn
 - Cloudflare 账户
-- OpenAI API 密钥
+- **DeepSeek API 密钥** (推荐) 或 OpenAI API 密钥
 
 ### 1. 克隆项目
 
@@ -58,6 +59,13 @@ npm install
 ```
 
 ### 4. 配置环境变量
+
+#### 获取 DeepSeek API 密钥
+
+1. 访问 [DeepSeek 官网](https://platform.deepseek.com/)
+2. 注册并登录账户
+3. 在 API Keys 页面创建新的 API 密钥
+4. 复制密钥备用
 
 #### 创建 KV 命名空间
 
@@ -87,10 +95,23 @@ id = "your-rate-limit-namespace-id"
 preview_id = "your-rate-limit-preview-id"
 
 [vars]
-AI_API_URL = "https://api.openai.com/v1/chat/completions"
-AI_API_KEY = "your-openai-api-key"
+AI_API_URL = "https://api.deepseek.com/v1/chat/completions"
+AI_API_KEY = "your-deepseek-api-key"
+AI_MODEL = "deepseek-chat"
 MAX_MESSAGES_PER_HOUR = "60"
 MAX_MESSAGE_LENGTH = "2000"
+```
+
+#### 切换到 OpenAI (可选)
+
+如果您想使用 OpenAI 而不是 DeepSeek，请修改环境变量：
+
+```toml
+[vars]
+AI_API_URL = "https://api.openai.com/v1/chat/completions"
+AI_API_KEY = "your-openai-api-key"
+AI_MODEL = "gpt-3.5-turbo"
+# 其他配置保持不变...
 ```
 
 ### 5. 部署 Workers
@@ -129,6 +150,19 @@ npm run build
 
 构建文件将输出到 `dist` 目录。
 
+## 🤖 支持的AI模型
+
+应用支持多种AI模型，通过修改 `AI_MODEL` 环境变量即可切换：
+
+### DeepSeek 模型 (推荐)
+- `deepseek-chat` - 通用对话模型 (默认)
+- `deepseek-coder` - 代码专用模型
+
+### OpenAI 模型
+- `gpt-3.5-turbo` - 经典对话模型
+- `gpt-4` - 高质量对话模型
+- `gpt-4-turbo-preview` - 最新预览版本
+
 ## 📁 项目结构
 
 ```
@@ -164,8 +198,9 @@ ai-chat/
 
 | 变量名 | 描述 | 默认值 |
 |--------|------|--------|
-| `AI_API_URL` | OpenAI API 地址 | `https://api.openai.com/v1/chat/completions` |
-| `AI_API_KEY` | OpenAI API 密钥 | - |
+| `AI_API_URL` | AI API 地址 | `https://api.deepseek.com/v1/chat/completions` |
+| `AI_API_KEY` | AI API 密钥 | - |
+| `AI_MODEL` | 使用的AI模型 | `deepseek-chat` |
 | `MAX_MESSAGES_PER_HOUR` | 每小时最大消息数 | `60` |
 | `MAX_MESSAGE_LENGTH` | 单条消息最大长度 | `2000` |
 
@@ -200,6 +235,7 @@ type Mutation {
 - **内容验证**: 过滤不当内容和恶意输入
 - **CORS 保护**: 配置适当的跨域资源共享
 - **错误处理**: 完善的错误捕获和处理机制
+- **API 密钥安全**: 环境变量保护敏感信息
 
 ## 🔍 性能优化
 
@@ -207,6 +243,62 @@ type Mutation {
 - **缓存策略**: KV 存储自动过期，减少存储成本
 - **边缘计算**: Cloudflare Workers 在全球边缘节点运行
 - **GraphQL**: 精确查询，减少数据传输
+- **模型优化**: DeepSeek 模型针对中文优化，响应更快
+
+## 💰 成本优势
+
+使用 DeepSeek 相比 OpenAI 有显著的成本优势：
+
+- **DeepSeek**: ~￥0.002/1K tokens (输入) + ~￥0.006/1K tokens (输出)
+- **OpenAI GPT-3.5**: ~￥0.01/1K tokens (输入) + ~￥0.02/1K tokens (输出)
+- **节省成本**: DeepSeek 成本约为 OpenAI 的 1/5
+
+## 🚀 部署脚本
+
+项目提供了自动化部署脚本：
+
+```bash
+# 项目初始化
+npm run setup
+
+# 开发环境启动
+npm run dev:all
+
+# 生产部署
+npm run deploy
+```
+
+## 🐛 故障排除
+
+### 常见问题
+
+1. **Workers 部署失败**
+   - 检查 `wrangler.toml` 配置是否正确
+   - 确认 KV 命名空间 ID 是否正确
+   - 验证 DeepSeek API 密钥是否有效
+
+2. **前端连接失败**
+   - 检查 Apollo Client URI 是否正确
+   - 确认 Workers 是否成功部署
+   - 查看浏览器网络面板的错误信息
+
+3. **AI 回复失败**
+   - 检查 DeepSeek API 密钥余额
+   - 验证 API 调用频率是否超限
+   - 查看 Workers 日志获取详细错误
+
+### 调试命令
+
+```bash
+# 查看 Workers 日志
+wrangler tail
+
+# 测试 Workers 本地开发
+wrangler dev
+
+# 验证 KV 数据
+wrangler kv:key list --binding=CHAT_DB
+```
 
 ## 🤝 贡献指南
 
@@ -220,6 +312,24 @@ type Mutation {
 
 本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
 
+## 🙏 致谢
+
+- [React](https://reactjs.org/) - 用户界面库
+- [Cloudflare Workers](https://workers.cloudflare.com/) - 边缘计算平台
+- [GraphQL Yoga](https://the-guild.dev/graphql/yoga-server) - GraphQL 服务器
+- [Tailwind CSS](https://tailwindcss.com/) - CSS 框架
+- [Lucide](https://lucide.dev/) - 图标库
+- [DeepSeek](https://platform.deepseek.com/) - AI 能力提供商
+
+## 📞 联系方式
+
+如有问题或建议，请通过以下方式联系：
+
+- 创建 [Issue](https://github.com/Rexingleung/ai-chat/issues)
+- 发送邮件至：rexingleung@126.com
+
 ---
 
 ⭐ 如果这个项目对您有帮助，请给它一个星标！
+
+🤖 **现在就体验 DeepSeek 驱动的智能对话吧！**
